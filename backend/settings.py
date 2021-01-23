@@ -25,12 +25,10 @@ SECRET_KEY = 'c*-5_q-#k&g_p90#%#h3hc&)ky0@!e0je^vsh9$nqnxzma1+37'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # we whitelist localhost:3000 because that's where frontend will be served
-CORS_ORIGIN_WHITELIST = (
-     'localhost:3000/'
- )
+
 # Application definition
 
 INSTALLED_APPS = [
