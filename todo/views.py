@@ -35,6 +35,7 @@ class UserCreate(APIView):
             user = serializer.save()
             if user:
                 token = Token.objects.create(user=user)
+                cart = Cart.objects.create(user=user)
                 json = serializer.data
                 json['token'] = token.key
                 return Response(json,)
