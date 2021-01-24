@@ -45,7 +45,6 @@ class UserCreate(APIView):
 @csrf_exempt
 def cardEntry(request):
   try:
-    print('pk')
     body_unicode = request.body.decode('utf-8')
     body = json.loads(body_unicode)
     product = body.get('product', '')
@@ -110114,7 +110113,6 @@ def test(request):
     todo.price = item['price']
     todo.completed = False
     todo.save()
-  print('done')
   return JsonResponse({
     'ok':'ok'
   })
