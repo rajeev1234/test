@@ -28,13 +28,10 @@ class Cart(models.Model):
 class CartItem(models.Model):
     product = models.ForeignKey(Todo, on_delete=models.CASCADE,null=False,blank=False)
     quantity = models.IntegerField(default=1)
-    price_ht = models.FloatField(blank=True)
+    price_ht = models.FloatField(blank=True, null=True)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE,null=False,blank=False)
 
     TAX_AMOUNT = 19.25
 
     def price_ttc(self):
         return self.price_ht * (1 + TAX_AMOUNT/100.0)
-
-    def __str__(self):
-        return  self.price_ht + " - " + self.product

@@ -3,14 +3,20 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import render
 from rest_framework import viewsets          # add this
-from .serializer import TodoSerializer      # add this
-from .models import Todo                     # add this
+from .serializer import TodoSerializer,UserSerializer,CartItemSerializer  # add this
+from .models import Todo,CartItem,Cart                # add this
 import requests
 from rest_framework import generics
 from rest_framework import filters
 from django.http import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.permissions import AllowAny
+from rest_framework.authtoken.models import Token
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.http import JsonResponse
+import json
+from django.views.decorators.csrf import csrf_exempt
 class TodoView(generics.ListAPIView):   # add this
   queryset = Todo.objects.all()
   serializer_class = TodoSerializer
@@ -18,7 +24,49 @@ class TodoView(generics.ListAPIView):   # add this
   search_fields = ('title',)
   ordering_fields = ('rating',)
   
+class UserCreate(APIView):
+    """ 
+    Creates the user. 
+    """
 
+    def post(self, request, format='json'):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            if user:
+                token = Token.objects.create(user=user)
+                cart = Cart.objects.create(user=user)
+                json = serializer.data
+                json['token'] = token.key
+                return Response(json,)
+
+        return Response(serializer.errors)
+
+@csrf_exempt
+def cardEntry(request):
+  try:
+    print('pk')
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    product = body.get('product', '')
+    cartItem = CartItem()
+    cartItem.product = Todo.objects.filter(id =product).last()
+    cartItem.cart = Cart.objects.last()
+    cartItem.price_ht = Todo.objects.filter(id =product).last().price
+    cartItem.save()
+
+    return JsonResponse({
+      "status" : "success"
+    })
+  except Exception as ex:
+    return JsonResponse({
+      "status" : str(ex)
+    })
+
+
+class CartItemView(generics.ListAPIView):   # add this
+  queryset = CartItem.objects.all()
+  serializer_class = CartItemSerializer
 
 def test(request):
   json = [

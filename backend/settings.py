@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c*-5_q-#k&g_p90#%#h3hc&)ky0@!e0je^vsh9$nqnxzma1+37'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
     'todo',
     'django_filters'
 ]
@@ -127,7 +128,10 @@ STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 100,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+      'rest_framework.authentication.TokenAuthentication',
+    )
 }
 STATIC_ROOT =  os.path.join(BASE_DIR, 'static')
 django_heroku.settings(locals())
