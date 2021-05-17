@@ -16,19 +16,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
-from rest_framework import routers       
-from todo.views import TodoView,CartItemView
-from todo.views import test,UserCreate,cardEntry
+from rest_framework import routers
+from todo.views import employeeList,qualificationNameList
 router = routers.DefaultRouter()
 # router.register(r'todos', TodoView.as_view(),'todo') 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include(router.urls)),
-    url(r'^test/',test),
-    url(r'^api/todos/', TodoView.as_view()),
-    url(r'^users/$', UserCreate.as_view(), name='account-create'),
-    # url(r'^login/$', UserCreate.as_view(), name='account-create'),
-    url(r'^cart/$', cardEntry, name='cartItem-create'),
-    url(r'^CartItemView/$',CartItemView.as_view())
+    url(r'^employeeList', employeeList),
+    url(r'^qualificationNameList', qualificationNameList)
     
 ]
